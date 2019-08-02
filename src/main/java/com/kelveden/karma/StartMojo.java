@@ -137,6 +137,11 @@ public class StartMojo extends AbstractMojo {
     private Boolean colors;
 
     /**
+     * Use this to push spec file configuration
+     */
+    @Parameter(property = "specFileRegistry", required = false)
+    private String specFileRegistry;
+    /**
      * Flag that when set to true indicates that execution of the goal should be skipped. Note that setting this property
      * will skip Karma tests *only*. If you also want to skip tests such as those run by the maven-surefire-plugin, consider
      * using the skipTests property instead.
@@ -246,11 +251,13 @@ public class StartMojo extends AbstractMojo {
         command.addAll(KarmaUtils.valueToKarmaArgument(captureTimeout, "--capture-timeout"));
         command.addAll(KarmaUtils.valueToKarmaArgument(reportSlowerThan, "--report-slower-than"));
         command.addAll(KarmaUtils.valueToKarmaArgument(colors, "--colors"));
+        command.addAll(KarmaUtils.valueToKarmaArgument(specFileRegistry, "--specFileRegistry"));
 
         builder.redirectErrorStream(true);
 
         try {
-            getLog().info("Executing Karma Test Suite ...");
+        	
+            getLog().info("Executing Karma Test Suite with SpecFileRegistry ...");
             getLog().info(StringUtils.join(command.iterator(), " "));
 
             return builder.start();
